@@ -1,4 +1,4 @@
-# Discrete-state representation learning for industrial and wearable time series
+# Discrete State-Learning in Multivariate Time Series for CPS and HAR
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Tests](../../actions/workflows/tests.yml/badge.svg)](../../actions/workflows/tests.yml)
@@ -220,8 +220,6 @@ pytest
 
 ## Citation
 
-Before making the repository public, add the paper's final title, author list, DOI, and BibTeX entry here (or in a
-`CITATION.cff`).
 
 ## License
 
