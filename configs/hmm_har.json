@@ -1,0 +1,23 @@
+{
+  "seed": 42,
+
+  "model": {
+    "num_states": 12,
+    "emission": "gaussian",
+    "covariance_type": "diag",
+    "topology": "ergodic",
+    "left_right_self_prob": 0.9,
+
+    "init_params": "stmc",
+    "params": "stmc"
+  },
+
+  "train": {
+    "epochs": 200,
+
+    "early_stop_patience": 15,
+
+    "ckpt_dir": "checkpoints/hmm/har",
+    "ckpt_name": "hmm_best.pkl"
+  }
+}

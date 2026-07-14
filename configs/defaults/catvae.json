@@ -1,0 +1,22 @@
+{
+  "seed": 42,
+  "model": {
+    "latent_dim": 32,
+    "categorical_dim": 4,
+    "beta": 0.25,
+    "temperature": 1.0,
+    "enc_hidden": [256, 128],
+    "dec_hidden": [128, 256],
+    "dropout": 0.0
+  },
+  "train": {
+    "epochs": 100,
+    "batch_size": 64,
+    "lr": 0.001,
+    "weight_decay": 0.0,
+    "grad_clip_norm": 1.0,
+    "early_stop_patience": 15,
+    "ckpt_dir": "checkpoints/catvae/custom",
+    "ckpt_name": "catvae_best.pt"
+  }
+}

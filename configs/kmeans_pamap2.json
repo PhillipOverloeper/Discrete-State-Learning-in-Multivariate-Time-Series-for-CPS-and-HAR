@@ -1,0 +1,17 @@
+{
+  "seed": 42,
+
+  "model": {
+    "num_embeddings": 12,
+    "init": "k-means++",
+    "n_init": 12
+
+  },
+
+  "train": {
+    "max_iter": 200,
+
+    "ckpt_dir": "checkpoints/kmeans/pamap2",
+    "ckpt_name": "kmeans_best.pkl"
+  }
+}

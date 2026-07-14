@@ -1,0 +1,29 @@
+{
+  "seed": 42,
+
+  "model": {
+    "latent_dim": 32,
+    "num_embeddings": 4,
+    "beta": 0.886,
+    "enc_hidden": [256, 128],
+    "dec_hidden": [128, 256],
+    "dropout": 0.0
+  },
+
+  "train": {
+    "epochs": 200,
+    "batch_size": 64,
+    "lr": 0.00423,
+    "weight_decay": 0.0,
+    "grad_clip_norm": 0.0,
+
+    "recon_loss_type": "mse",
+    "recon_weight": 1.0,
+    "vq_weight": 1.0,
+
+    "early_stop_patience": 15,
+
+    "ckpt_dir": "checkpoints/vqvae/har",
+    "ckpt_name": "vqvae_best.pt"
+  }
+}

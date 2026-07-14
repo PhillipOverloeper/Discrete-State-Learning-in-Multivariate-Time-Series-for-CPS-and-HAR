@@ -1,0 +1,13 @@
+{
+  "seed": 42,
+  "model": {
+    "num_embeddings": 4,
+    "init": "k-means++",
+    "n_init": 4
+  },
+  "train": {
+    "max_iter": 200,
+    "ckpt_dir": "checkpoints/kmeans/custom",
+    "ckpt_name": "kmeans_best.pkl"
+  }
+}

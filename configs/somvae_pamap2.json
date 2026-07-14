@@ -1,0 +1,28 @@
+{
+  "seed": 42,
+
+  "model": {
+    "latent_dim": 32,
+    "som_dim": [4, 4],
+    "alpha": 1.0,
+    "beta": 0.25,
+    "gamma": 1.0,
+    "tau": 1.0,
+    "enc_hidden": [256, 128],
+    "dec_hidden": [128, 256],
+    "dropout": 0.0
+  },
+
+  "train": {
+    "epochs": 1,
+    "batch_size": 32,
+    "lr": 0.005,
+    "weight_decay": 0.0,
+    "grad_clip_norm": 0.0,
+
+    "early_stop_patience": 15,
+
+    "ckpt_dir": "checkpoints/somvae/pamap2",
+    "ckpt_name": "somvae_best.pt"
+  }
+}
