@@ -17,7 +17,7 @@ discrete states from multivariate time series:
 
 ### Post-paper extension: RBM
 
-A Gaussian–Bernoulli restricted Boltzmann machine (RBM) is available as an additional baseline. **The RBM was added
+A Gaussian‚ÄìBernoulli restricted Boltzmann machine (RBM) is available as an additional baseline. **The RBM was added
 after the paper and is not part of the experiments, comparisons, or claims reported in the ETFA publication.** It is
 kept separate in `metrics/<dataset>/rbm/`, and every generated RBM metric file contains `paper_model: false`.
 
@@ -94,14 +94,88 @@ Custom CSV and Parquet datasets use the same leakage-safe preprocessing pipeline
 5. transform every split with that scaler, and
 6. create sliding windows without crossing run or split boundaries.
 
-Copy [the example specification](configs/datasets/example.json), adjust the column names, and prepare the data:
+The custom-data implementation lives in `generic_data.py`. Normally, it should not be called directly:
+`prepare_data.py --spec ...` loads the specification and invokes `generic_data.prepare_custom_dataset` for you.
+
+#### Minimal CSV example
+
+Store one or more CSV files in a raw-data directory. Each row represents one timestamp. A minimal file might look
+like this:
+
+```csv
+run_id,timestamp,sensor_x,sensor_y,state
+run_01,0,0.12,1.03,idle
+run_01,1,0.15,1.01,idle
+run_01,2,0.81,0.44,active
+run_02,0,0.10,1.08,idle
+run_02,1,0.78,0.39,active
+run_03,0,1.42,-0.15,fault
+```
+
+For a group split, provide at least three different `run_id` values and enough rows in every run to fill one
+`window_length`. Real datasets will normally contain many more observations than this abbreviated example.
+
+Create a specification such as `configs/datasets/my_dataset.json`:
+
+```json
+{
+  "name": "my_dataset",
+  "file_pattern": "*.csv",
+  "format": "csv",
+  "read_options": {},
+  "label_column": "state",
+  "group_column": "run_id",
+  "time_column": "timestamp",
+  "feature_columns": ["sensor_x", "sensor_y"],
+  "exclude_columns": [],
+  "split_strategy": "group",
+  "val_fraction": 0.15,
+  "test_fraction": 0.20,
+  "window_length": 128,
+  "stride": 24,
+  "scaler": "standard",
+  "fillna": "interpolate"
+}
+```
+
+Then prepare the dataset:
+
+```bash
+python prepare_data.py \
+  --spec configs/datasets/my_dataset.json \
+  --raw-dir /path/to/my/raw-data
+```
+
+This writes the following files to `data/custom/my_dataset/processed/`:
+
+```text
+metadata.json
+scaler.joblib
+train_windows.npz
+val_windows.npz
+test_windows.npz
+```
+
+You can verify the generated shapes before starting a longer experiment:
+
+```bash
+python - <<'PY'
+from generic_data import GenericDataLoader
+
+data = GenericDataLoader("data/custom/my_dataset").load_processed_data()
+for split in ("train_ds", "val_ds", "test_ds"):
+    dataset = data[split]
+    print(split, dataset.X.shape, dataset.y_label.shape)
+print(data["meta"])
+PY
+```
+
+Instead of writing the specification from scratch, copy
+[the example specification](configs/datasets/example.json) and adjust its column names and window parameters:
 
 ```bash
 cp configs/datasets/example.json configs/datasets/my_dataset.json
 # Edit my_dataset.json
-python prepare_data.py \
-  --spec configs/datasets/my_dataset.json \
-  --raw-dir /path/to/extracted/files
 ```
 
 The important specification fields are:
@@ -223,3 +297,4 @@ pytest
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
